@@ -21,8 +21,21 @@ These plugins can be used to interact with remotely hosted models via their API:
 - **[llm-claude](https://github.com/tomviner/llm-claude)** by Tom Viner adds support for Claude and Claude Instant by Anthropic.
 - **[llm-openrouter](https://github.com/simonw/llm-openrouter)** provides access to models hosted on [OpenRouter](https://openrouter.ai/).
 - **[llm-anyscale-endpoints](https://github.com/simonw/llm-anyscale-endpoints)** supports models hosted on the [Anyscale Endpoints](https://app.endpoints.anyscale.com/) platform, including Llama 2 70B.
+- **[llm-cohere](https://github.com/Accudio/llm-cohere)** by Alistair Shepherd provides `cohere-generate` and `cohere-summarize` API models, powered by [Cohere](https://cohere.com/).
 
 If an API model host provides an OpenAI-compatible API you can also [configure LLM to talk to it](https://llm.datasette.io/en/stable/other-models.html#openai-compatible-models) without needing an extra plugin.
+
+## Embedding models
+
+{ref}`Embedding models <embeddings>` are models that can be used to generate and store embedding vectors for text.
+
+- **[llm-sentence-transformers](https://github.com/simonw/llm-sentence-transformers)** adds support for embeddings using the [sentence-transformers](https://www.sbert.net/) library, which provides access to [a wide range](https://www.sbert.net/docs/pretrained_models.html) of embedding models.
+- **[llm-clip](https://github.com/simonw/llm-clip)** provides the [CLIP](https://openai.com/research/clip) model, which can be used to embed images and text in the same vector space, enabling text search against images. See [Build an image search engine with llm-clip](https://simonwillison.net/2023/Sep/12/llm-clip-and-chat/) for more on this plugin.
+- **[llm-embed-jina](https://github.com/simonw/llm-embed-jina)** provides Jina AI's [8K text embedding models](https://jina.ai/news/jina-ai-launches-worlds-first-open-source-8k-text-embedding-rivaling-openai/).
+
+## Extra commands
+
+- **[llm-cluster](https://github.com/simonw/llm-cluster)** adds a `llm cluster` command for calculating clusters for a collection of embeddings. Calculated clusters can then be passed to a Large Language Model to generate a summary description.
 
 ## Just for fun
 
