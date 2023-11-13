@@ -137,7 +137,7 @@ To execute the model, we start with a word. We look at the options for words tha
 
 Some words might not have any following words from our training sentence. For our implementation we wil fall back on picking a random word from our collection.
 
-We will implement this as a [Python generator], using the yield keyword to produce each token:
+We will implement this as a [Python generator](https://realpython.com/introduction-to-python-generators/), using the yield keyword to produce each token:
 ```python
 def generate(transitions, length, start_word=None):
     all_words = list(transitions.keys())
@@ -559,3 +559,23 @@ It adds `llm` as a dependency, ensuring it will be installed if someone tries to
 It adds some links to useful pages (you can drop the `project.urls` section if those links are not useful for your project).
 
 You should drop a `LICENSE` file into the GitHub repository for your package as well. I like to use the Apache 2 license [like this](https://github.com/simonw/llm/blob/main/LICENSE).
+
+## What to do if it breaks
+
+Sometimes you may make a change to your plugin that causes it to break, preventing `llm` from starting. For example you may see an error like this one:
+
+```
+$ llm 'hi'
+Traceback (most recent call last):
+  ...
+  File llm-markov/llm_markov.py", line 10
+    register(Markov()):
+                      ^
+SyntaxError: invalid syntax
+```
+You may find that you are unable to uninstall the plugin using `llm uninstall llm-markov` because the command itself fails with the same error.
+
+Should this happen, you can uninstall the plugin after first disabling it using the {ref}`LLM_LOAD_PLUGINS <llm-load-plugins>` environment variable like this:
+```bash
+LLM_LOAD_PLUGINS='' llm uninstall llm-markov
+```
