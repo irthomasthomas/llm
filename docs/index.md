@@ -1,5 +1,6 @@
 # LLM
 
+[![GitHub repo](https://img.shields.io/badge/github-repo-green)](https://github.com/simonw/llm)
 [![PyPI](https://img.shields.io/pypi/v/llm.svg)](https://pypi.org/project/llm/)
 [![Changelog](https://img.shields.io/github/v/release/simonw/llm?include_prereleases&label=changelog)](https://llm.datasette.io/en/stable/changelog.html)
 [![Tests](https://github.com/simonw/llm/workflows/Test/badge.svg)](https://github.com/simonw/llm/actions?query=workflow%3ATest)
@@ -25,16 +26,20 @@ For more check out [the llm tag](https://simonwillison.net/tags/llm/) on my blog
 
 ## Quick start
 
-First, install LLM using `pip`:
+First, install LLM using `pip` or Homebrew or `pipx`:
 
 ```bash
 pip install llm
 ```
-Or with [pipx](https://pipxproject.github.io/pipx/) (recommended, as then it won't clash with any other installed packages):
+Or with Homebrew (see {ref}`warning note <homebrew-warning>`):
+```bash
+brew install llm
+```
+Or with [pipx](https://pypa.github.io/pipx/):
 ```bash
 pipx install llm
 ```
-If you have an [OpenAI API key](https://platform.openai.com/account/api-keys) key you can run this:
+If you have an [OpenAI API key](https://platform.openai.com/api-keys) key you can run this:
 ```bash
 # Paste your OpenAI API key into this
 llm keys set openai
@@ -76,6 +81,7 @@ maxdepth: 3
 ---
 setup
 usage
+openai-models
 other-models
 embeddings/index
 plugins/index
