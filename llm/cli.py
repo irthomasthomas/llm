@@ -473,6 +473,12 @@ def cli():
     is_flag=True,
     help="Extract last fenced code block",
 )
+@click.option(
+    "json_output",
+    "--json",
+    is_flag=True,
+    help="Return response as JSON (implies --no-stream)",
+)
 def prompt(
     prompt,
     system,
@@ -504,6 +510,7 @@ def prompt(
     usage,
     extract,
     extract_last,
+    json_output,
 ):
     """
     Execute a prompt
@@ -889,7 +896,29 @@ def prompt(
                 system_fragments=resolved_system_fragments,
                 **kwargs,
             )
-            if should_stream:
+            if json_output:
+                # Produce JSON output without causing a double log
+                # Realize the response text to ensure any errors are raised
+                text = response.text()
+
+                # Log here if logging is enabled, then output the logged row as JSON
+                do_log_now = (logs_on() or log) and not no_log
+                if do_log_now:
+                    response.log_to_db(db)
+                    # Support ChainResponse by using the last response row
+                    if isinstance(response, ChainResponse) and response._responses:
+                        last = response._responses[-1]
+                        row = db["responses"].get(last.id)
+                    else:
+                        row = db["responses"].get(response.id)
+                    click.echo(json.dumps(dict(row), indent=2, default=str))
+                else:
+                    # Cannot return json if logging is disabled
+                    raise click.ClickException("--json requires logging to be enabled")
+
+                # Prevent the generic logging block below from logging again
+                no_log = True
+            elif should_stream:
                 for chunk in response:
                     print(chunk, end="")
                     sys.stdout.flush()
@@ -1618,8 +1647,8 @@ def logs_list(
     conversation_id,
     id_gt,
     id_gte,
-    json_output,
     expand,
+    json_output,
 ):
     "Show logged prompts and their responses"
     if database and not path:
@@ -2783,10 +2812,8 @@ def aliases_set(alias, model_id, query, options):
             err=True,
         )
     else:
-        if options:
-            set_alias_with_options(alias, model_id, dict(options))
-        else:
-            set_alias(alias, model_id)
+        set_alias(alias, model_id)
+
 
 @aliases.command(name="remove")
 @click.argument("alias")
